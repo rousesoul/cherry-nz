@@ -1,51 +1,65 @@
 import React, { useState, useEffect } from "react";
 import UploadService from "../services/FileUploadService";
+import AuthService from "../services/auth.service";
 
-const UploadFiles = () => {
-    const [selectedFiles, setSelectedFiles] = useState(undefined);
-    const [currentFile, setCurrentFile] = useState(undefined);
-    const [progress, setProgress] = useState(0);
-    const [message, setMessage] = useState("");
+const FileUpload = () => {
+  const [selectedFiles, setSelectedFiles] = useState(undefined);
+  const [currentFile, setCurrentFile] = useState(undefined);
+  const [progress, setProgress] = useState(0);
+  const [message, setMessage] = useState("");
 
-    const [fileInfos, setFileInfos] = useState([]);
+  const [fileInfos, setFileInfos] = useState([]);
 
-    const selectFile = (event) => {
-        setSelectedFiles(event.target.files);
-    };
+  const selectFile = (event) => {
+    setSelectedFiles(event.target.files);
+  };
 
-    const upload = () => {
-        let currentFile = selectedFiles[0];
+  const upload = () => {
+    let currentFile = selectedFiles[0];
 
+    setProgress(0);
+    setCurrentFile(currentFile);
+
+    UploadService.upload(currentFile, (event) => {
+      setProgress(Math.round((100 * event.loaded) / event.total));
+    })
+      .then((response) => {
+        setMessage(response.data.message);
+        return UploadService.getFiles();
+      })
+      .then((files) => {
+        setFileInfos(files.data);
+      })
+      .catch(() => {
         setProgress(0);
-        setCurrentFile(currentFile);
+        setMessage("Could not upload the file!");
+        setCurrentFile(undefined);
+      });
 
-        UploadService.upload(currentFile, (event) => {
-            setProgress(Math.round((100 * event.loaded) / event.total));
-        })
-            .then((response) => {
-                setMessage(response.data.message);
-                return UploadService.getFiles();
-            })
-            .then((files) => {
-                setFileInfos(files.data);
-            })
-            .catch(() => {
-                setProgress(0);
-                setMessage("Could not upload the file!");
-                setCurrentFile(undefined);
-            });
+    setSelectedFiles(undefined);
+  };
 
-        setSelectedFiles(undefined);
-    };
+  useEffect(() => {
+    UploadService.getFiles().then((response) => {
+      setFileInfos(response.data);
+    });
+  }, []);
 
-    useEffect(() => {
-        UploadService.getFiles().then((response) => {
-            setFileInfos(response.data);
-        });
-    }, []);
+  const [currentUser, setCurrentUser] = useState(undefined);
 
-    return (
-        <div>
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, []);
+
+  return (
+    <>
+      {currentUser ?
+        <div className="container text-center mt-3">
+          <h2>React Hooks File Upload</h2>
           {currentFile && (
             <div className="progress">
               <div
@@ -60,11 +74,11 @@ const UploadFiles = () => {
               </div>
             </div>
           )}
-    
+
           <label className="btn btn-default">
             <input type="file" onChange={selectFile} />
           </label>
-    
+
           <button
             className="btn btn-success"
             disabled={!selectedFiles}
@@ -72,11 +86,11 @@ const UploadFiles = () => {
           >
             Upload
           </button>
-    
+
           <div className="alert alert-light" role="alert">
             {message}
           </div>
-    
+
           <div className="card">
             <div className="card-header">List of Files</div>
             <ul className="list-group list-group-flush">
@@ -89,7 +103,13 @@ const UploadFiles = () => {
             </ul>
           </div>
         </div>
-      );
-    };
+        :
+        <div className="container text-center mt-5">
+          <h3>Sorry! You aren't our user so can't read this page. Please sign up first.</h3>
+        </div>
+      }
+    </>
+  );
+};
 
-export default UploadFiles;
+export default FileUpload;
