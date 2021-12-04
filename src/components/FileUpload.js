@@ -104,8 +104,10 @@ const FileUpload = () => {
           </div>
         </div>
         :
-        <div className="container text-center mt-5">
-          <h3>Sorry! You aren't our user so can't read this page. Please sign up first.</h3>
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       }
     </>
