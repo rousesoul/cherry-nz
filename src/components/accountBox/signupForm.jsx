@@ -55,7 +55,7 @@ const vpassword = (value) => {
   }
 };
 
-export function SignupForm(props) {
+export default function SignupForm(props) {
   const form = useRef();
   const checkBtn = useRef();
 

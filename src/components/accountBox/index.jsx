@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { LoginForm } from "./loginForm";
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
-import { SignupForm } from "./signupForm";
 import { Marginer } from "../marginer";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 
 const BoxContainer = styled.div`
   width: 280px;
@@ -98,7 +98,7 @@ const expandingTransition = {
   stiffness: 30,
 };
 
-export function AccountBox(props) {
+export default function AccountBox(props) {
   const [isExpanded, setExpanded] = useState(false);
   const [active, setActive] = useState("signin");
 
@@ -127,7 +127,7 @@ export function AccountBox(props) {
 
   return (
     <AccountContext.Provider value={contextValue}>
-      <Marginer direction="vertical" margin="1.6em" />
+      <Marginer direction="vertical" margin="0em" />
       <BoxContainer>
         <TopContainer>
           <BackDrop

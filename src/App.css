@@ -22,6 +22,10 @@ nav {
 background-color: #ff4757
 }
 
+.home {
+  background-image: url("https://pixabay.com/zh/images/download/cherries-1465801_1920.jpg");
+}
+
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;

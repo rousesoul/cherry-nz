@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import UploadService from "../services/FileUploadService";
 import AuthService from "../services/auth.service";
+import NavBar from "../NavBar";
 
-const FileUpload = () => {
+export default function FileUpload() {
   const [selectedFiles, setSelectedFiles] = useState(undefined);
   const [currentFile, setCurrentFile] = useState(undefined);
   const [progress, setProgress] = useState(0);
@@ -45,18 +46,11 @@ const FileUpload = () => {
     });
   }, []);
 
-  const [currentUser, setCurrentUser] = useState(undefined);
-
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
-
-    if (user) {
-      setCurrentUser(user);
-    }
-  }, []);
+  const currentUser = AuthService.getCurrentUser()
 
   return (
     <>
+      <NavBar />
       {currentUser ?
         <div className="container text-center mt-3">
           <h2>React Hooks File Upload</h2>
@@ -104,14 +98,11 @@ const FileUpload = () => {
           </div>
         </div>
         :
-        <div class="d-flex justify-content-center">
-          <div class="spinner-border text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+        <div class="text-center mt-5">
+          <h5>Sorry! You are not our user, or your token has expired.</h5>
+          <a href="/home" className="text-danger"><h3>Please Login or Signin first!</h3></a>
         </div>
       }
     </>
   );
-};
-
-export default FileUpload;
+}

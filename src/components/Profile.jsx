@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import NavBar from "../NavBar";
 import AuthService from "../services/auth.service";
 
-const Profile = () => {
-  const [currentUser, setCurrentUser] = useState(undefined);
-
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
-
-    if (user) {
-      setCurrentUser(user);
-    }
-  }, []);
+export default function Profile() {
+  const currentUser = AuthService.getCurrentUser()
 
   return (
     <>
+      <NavBar />
       {currentUser ?
-        <div className="container">
+        <div className="container mt-3">
           <header className="jumbotron">
             <h3>
               <strong>{currentUser.userName}</strong> Profile
@@ -35,12 +29,11 @@ const Profile = () => {
           </p>
         </div>
         :
-        <div className="container text-center mt-5">
-          <h3>Sorry! You aren't our user so can't read this page. Please sign up first.</h3>
+        <div class="text-center mt-5">
+          <h5>Sorry! You are not our user, or your token has expired.</h5>
+          <a href="/home" className="text-danger"><h3>Please Login or Signin first!</h3></a>
         </div>
       }
     </>
   );
-};
-
-export default Profile;
+}

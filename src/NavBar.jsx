@@ -1,27 +1,9 @@
 import { NavLink } from "react-router-dom";
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import AuthService from "./services/auth.service";
 
-import EventBus from "./common/EventBus";
-
-export const NavBar = () => {
-    const [currentUser, setCurrentUser] = useState(undefined);
-
-    useEffect(() => {
-        const user = AuthService.getCurrentUser();
-
-        if (user) {
-            setCurrentUser(user);
-        }
-
-        EventBus.on("logout", () => {
-            logOut();
-        });
-
-        return () => {
-            EventBus.remove("logout");
-        };
-    }, []);
+export default function NavBar() {
+    const currentUser = AuthService.getCurrentUser()
 
     const logOut = () => {
         AuthService.logout();
@@ -33,12 +15,6 @@ export const NavBar = () => {
                 <strong>Cherry NZ</strong>
             </div>
             <div className="navbar-nav mr-auto">
-                <li className="nav-item">
-                    <NavLink exact to={"/"} className="nav-link">
-                        Home
-                    </NavLink>
-                </li>
-
                 <li className="nav-item">
                     <NavLink exact to={"/prodouct"} className="nav-link">
                         Prodouct

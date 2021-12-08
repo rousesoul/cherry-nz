@@ -3,32 +3,36 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 import AuthService from "./services/auth.service";
+import NavBar from './NavBar';
 
 export default function OderList() {
-  const [currentUser, setCurrentUser] = useState(undefined);
-
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
-
-    if (user) {
-      setCurrentUser(user);
-    }
-  }, []);
+  const currentUser = AuthService.getCurrentUser()
 
   const [columns] = useState([
     { title: 'User Id', field: 'userId', type: 'numeric' },
-    { title: 'User Name', field: 'userName' },
-    { title: 'Type', field: 'type', type: 'numeric' },
-    { title: 'Discount Rate', field: 'discountRate', type: 'numeric' },
-    { title: 'Password', field: 'password' },
-    { title: 'Created At', field: 'createdAt' },
-    { title: 'Is Active', field: 'isActive', type: 'numeric' },
-    { title: 'First Name', field: 'firstName' },
-    { title: 'Last Name', field: 'lastName' },
-    { title: 'Mobile Number', field: 'mobileNumber' },
-    { title: 'Email', field: 'email' },
-    { title: 'Company Name', field: 'companyName' },
-    { title: 'T Order', field: 'tOrder' },
+    { title: 'Product Id', field: 'productId', type: 'numeric' },
+    { title: 'QTY Rate', field: 'qty', type: 'numeric' },
+    { title: 'Batch Id', field: 'batchId' },
+    { title: 'Price Id', field: 'price', type: 'numeric' },
+    { title: 'Unit Price Rate', field: 'unitPrice', type: 'numeric' },
+    { title: 'Po Number', field: 'poNumber' },
+    { title: 'Recipient', field: 'recipient' },
+    { title: 'Recipient Country', field: 'recipientCountry' },
+    { title: 'Recipient Provience', field: 'recipientProvience' },
+    { title: 'recipient City', field: 'recipientCity' },
+    { title: 'Recipient Addr', field: 'recipientAddr' },
+    { title: 'Recipient Number', field: 'recipientNumber' },
+    { title: 'Sender City', field: 'senderCity' },
+    { title: 'Sender Addr', field: 'senderAddr' },
+    { title: 'Sender Country', field: 'senderCountry' },
+    { title: 'Sender Number', field: 'senderNumber' },
+    { title: 'Sender Name', field: 'senderName' },
+    { title: 'Status', field: 'status', type: 'numeric' },
+    { title: 'Track No', field: 'trackNo' },
+    { title: 'Billing Company', field: 'billingCompany' },
+    { title: 'Customer Reference No', field: 'customerReferenceNo' },
+    { title: 'Sender Company Name', field: 'senderCompanyName' },
+    { title: 'Payment Method', field: 'paymentMethod' },
   ]);
 
   const [data, setData] = useState([]);
@@ -38,7 +42,7 @@ export default function OderList() {
   useEffect(() => {
     const abortCont = new AbortController();
 
-    axios.get('http://206.189.39.185:5031/api/Order', { signal: abortCont.signal, timeout: 5000 })
+    axios.get('http://206.189.39.185:5031/api/Order/GetOrderList/userId/status?status=9', { signal: abortCont.signal, timeout: 60000 })
       .then(res => {
         setIsLoading(false);
         setData(res.data.data);
@@ -58,8 +62,9 @@ export default function OderList() {
 
   return (
     <>
+      <NavBar />
       {currentUser ?
-        <div className="home">
+        <div className="mt-3">
           {error && <div>{error}</div>}
           <MaterialTable
             title="Order List"
@@ -101,10 +106,9 @@ export default function OderList() {
             }} />
         </div>
         :
-        <div class="d-flex justify-content-center">
-          <div class="spinner-border text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+        <div class="text-center mt-5">
+          <h5>Sorry! You are not our user, or your token has expired.</h5>
+          <a href="/home" className="text-danger"><h3>Please Login or Signin first!</h3></a>
         </div>
       }
     </>

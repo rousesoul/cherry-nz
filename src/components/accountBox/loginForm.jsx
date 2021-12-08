@@ -25,7 +25,7 @@ const required = (value) => {
   }
 };
 
-export function LoginForm(props) {
+export default function LoginForm() {
   let history = useHistory();
   const form = useRef();
   const checkBtn = useRef();
@@ -34,7 +34,7 @@ export function LoginForm(props) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [rememberme, setRememberme] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -46,9 +46,9 @@ export function LoginForm(props) {
     setPassword(password);
   };
 
-  const onChangeRememberme = (e) => {
-    const rememberme = e.currentTarget.checked;
-    setRememberme(rememberme);
+  const onChangeRememberMe = (e) => {
+    const rememberMe = e.currentTarget.checked;
+    setRememberMe(rememberMe);
   }
 
   const handleLogin = (e) => {
@@ -60,7 +60,7 @@ export function LoginForm(props) {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(username, password, rememberme).then(
+      AuthService.login(username, password, rememberMe).then(
         () => {
           history.push("/profile");
           window.location.reload();
@@ -110,7 +110,7 @@ export function LoginForm(props) {
         <Marginer direction="vertical" margin={10} />
         <MutedLink href="#">Forget your password?</MutedLink>
         <label>
-          <input name="rememberme" checked={rememberme} value={rememberme} onChange={onChangeRememberme} type="checkbox" /> Remember me
+          <input name="rememberme" checked={rememberMe} value={rememberMe} onChange={onChangeRememberMe} type="checkbox" /> Remember me
         </label>
         <SubmitButton type="submit" disabled={loading}>
           {loading && (
