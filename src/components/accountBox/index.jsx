@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
 import { Marginer } from "../marginer";
-import LoginForm from "./LoginForm";
-import SignupForm from "./SignupForm";
+import LoginForm from "./loginForm";
+import SignupForm from "./signupForm";
 
 const BoxContainer = styled.div`
   width: 280px;
