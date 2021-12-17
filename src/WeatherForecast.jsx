@@ -1,24 +1,22 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import MaterialTable from 'material-table';
-import AuthService from "./services/auth.service";
-import NavBar from './NavBar';
+import * as React from "react";
+import { useState, useEffect } from "react";
+import MaterialTable from "material-table";
+import { withRouter } from "react-router-dom";
+import api from "./services/api";
+import { get } from "./services/http";
 
-export default function WeatherForecast(props) {
-  const currentUser = AuthService.getCurrentUser()
-
+function WeatherForecast() {
   const [columns] = useState([
-    { title: 'Date', field: 'date' },
-    { title: 'Minimum Temperature', field: 'temperatureC' },
-    { title: 'Maximum Temperature', field: 'temperatureF' },
-    { title: 'Summary', field: 'summary' },
+    { title: "Date", field: "date" },
+    { title: "Minimum Temperature", field: "temperatureC" },
+    { title: "Maximum Temperature", field: "temperatureF" },
+    { title: "Summary", field: "summary" },
   ]);
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://206.189.39.185:5031/WeatherForecast')
+    get(api.apiURL + api.weather)
       .then(res => {
         setData(res.data)
       })
@@ -26,23 +24,16 @@ export default function WeatherForecast(props) {
   }, [])
 
   return (
-    <>
-      <NavBar />
-      {currentUser ?
-        <div className="container mt-3">
-          <MaterialTable
-            title="Weather Forecast"
-            columns={columns}
-            data={data}
-            options={{ search: false, paging: false }}
-          />
-        </div>
-        :
-        <div class="text-center mt-5">
-          <h5>Sorry! You are not our user, or your token has expired.</h5>
-          <a href="/home" className="text-danger"><h3>Please Login or Signin first!</h3></a>
-        </div>
-      }
-    </>
+    <div className="container mt-3">
+      < MaterialTable
+        title="Weather Forecast"
+        columns={columns}
+        data={data}
+        options={{ search: false, paging: false }
+        }
+      />
+    </div >
   )
 }
+
+export default withRouter(WeatherForecast)

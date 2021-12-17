@@ -55,7 +55,7 @@ const vpassword = (value) => {
   }
 };
 
-export default function SignupForm(props) {
+export default function SignupForm() {
   const form = useRef();
   const checkBtn = useRef();
 
@@ -83,15 +83,15 @@ export default function SignupForm(props) {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    setMessage("User registered successfully!");
+    setMessage("");
     setSuccessful(false);
 
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.register(username, email, password).then(
-        (response) => {
-          setMessage(response.data.message);
+        () => {
+          setMessage("Signuped successfully! You can login now!");
           setSuccessful(true);
         },
         (error) => {

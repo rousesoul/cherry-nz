@@ -54,29 +54,29 @@ export default function LoginForm() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    setMessage("User logined successfully!");
+    setMessage("");
     setLoading(true);
-
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(username, password, rememberMe).then(
-        () => {
-          history.push("/profile");
-          window.location.reload();
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+      AuthService.login(username, password, rememberMe)
+        .then(
+          () => {
+            history.push("/profile");
+            window.location.reload();
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
 
-          setLoading(false);
-          setMessage(resMessage);
-        }
-      );
+            setLoading(false);
+            setMessage(resMessage);
+          }
+        );
     } else {
       setLoading(false);
     }

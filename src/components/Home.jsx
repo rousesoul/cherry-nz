@@ -1,21 +1,19 @@
 import styled from "styled-components";
-import imgURL from "../img/cherries.jpg"
-import { useEffect } from "react";
 import AccountBox from "./accountBox";
+import imgURL from "../img/cherries.jpg"
 
 const AppContainer = styled.div`
-  width: 100%;
-  height: 756px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-image: url(${imgURL});
+  background-image:url(${imgURL});
+  background-size:cover;
+  background-position:center;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 `;
 
 export default function Home() {
-  useEffect(() => sessionStorage.getItem("user") && sessionStorage.removeItem("user"), [])
-
   return (
     <AppContainer>
       <AccountBox />
