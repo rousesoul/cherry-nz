@@ -20,12 +20,12 @@ export default function App() {
       {pathname === "/home" || (!currentUser && pathname === "/") ? null : <NavBar currentUser={currentUser} />}
       <Switch>
         <Route exact path="/home" component={Home} />
-        <Route exact path="/" render={() => currentUser ? <Redirect to="/profile" /> : <Redirect to="/home" />} />
-        <Route exact path="/profile" component={Profile} />
-        <ProtectedRoute path="/prodouct" component={Product} currentUser={currentUser} />
+        <Route exact path="/" render={() => currentUser ? <Redirect to="/product" /> : <Redirect to="/home" />} />
+        <Route exact path="/product" component={Product} />
         <ProtectedRoute path="/oderList" component={OderList} currentUser={currentUser} />
         <ProtectedRoute path="/userlist" component={UserList} currentUser={currentUser} />
         <ProtectedRoute path="/weatherforecast" component={WeatherForecast} currentUser={currentUser} />
+        <ProtectedRoute path="/profile" component={Profile} currentUser={currentUser} />
         <Redirect from="*" to="/" />
       </Switch>
     </>

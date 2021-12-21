@@ -15,8 +15,8 @@ export default function NavBar({ currentUser }) {
                 </div>
                 <div className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <NavLink exact to={"/prodouct"} className="nav-link">
-                            Prodouct
+                        <NavLink exact to={"/product"} className="nav-link">
+                            Product
                         </NavLink>
                     </li>
 

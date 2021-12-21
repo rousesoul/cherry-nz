@@ -6,7 +6,6 @@ import {
   MutedLink,
   SubmitButton,
 } from "./common";
-import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
@@ -14,6 +13,7 @@ import CheckButton from "react-validation/build/button";
 
 import AuthService from "../../services/auth.service";
 import { useHistory } from "react-router-dom";
+import { Marginer } from "../marginer/marginer";
 
 const required = (value) => {
   if (!value) {
@@ -62,7 +62,7 @@ export default function LoginForm() {
       AuthService.login(username, password, rememberMe)
         .then(
           () => {
-            history.push("/profile");
+            history.push("/product");
             window.location.reload();
           },
           (error) => {

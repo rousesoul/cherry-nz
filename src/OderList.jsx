@@ -4,9 +4,12 @@ import MaterialTable from "material-table";
 import { withRouter } from "react-router-dom";
 import api from "./services/api";
 import { get } from "./services/http";
+import XLSX from "xlsx";
+
+const extensions = ["xlsx", "xls", "csv"];
 
 function OderList() {
-  const [columns] = useState([
+  const [columnsOriginal] = useState([
     { title: "User Id", field: "userId", type: "numeric" },
     { title: "Product Id", field: "productId", type: "numeric" },
     { title: "QTY Rate", field: "qty", type: "numeric" },
@@ -36,6 +39,25 @@ function OderList() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [columns, setColumns] = useState(columnsOriginal);
+
+  const getExtension = file => {
+    const parts = file.name.split(".");
+    const extension = parts[parts.length - 1];
+    return extensions.includes(extension);
+  }
+
+  const convertToJson = (headers, data) => {
+    const rows = [];
+    data.forEach(row => {
+      let rowData = {};
+      row.forEach((element, index) => {
+        rowData[headers[index]] = element;
+      });
+      rows.push(rowData);
+    });
+    return rows
+  }
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -58,15 +80,42 @@ function OderList() {
     return () => abortCont.abort();
   }, [])
 
+  const importExcel = e => {
+    const file = e.target.files[0];
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      const bstr = e.target.result;
+      const workBook = XLSX.read(bstr, { type: "binary" });
+
+      const workSheetName = workBook.SheetNames[0];
+      const workSheet = workBook.Sheets[workSheetName];
+
+      const fileData = XLSX.utils.sheet_to_json(workSheet, { header: 1 });
+
+      const headers = fileData[0];
+      const heads = headers.map(head => ({ title: head, field: head }));
+      setColumns(heads);
+
+      fileData.splice(0, 1);
+      setData(convertToJson(headers, fileData));
+    }
+    file ?
+      (getExtension(file) ? reader.readAsBinaryString(file) : alert("Invalid file input, Select Excel, CSV file"))
+      :
+      (setData([])) && (setColumns([]));
+  }
+
   return (
     <div className="mt-3">
       {error && <div>{error}</div>}
+      <input type="file" onChange={importExcel} className="ms-3 mb-3" />
       <MaterialTable
         title="Order List"
         isLoading={isLoading}
         columns={columns}
         data={data}
-        options={{ actionsColumnIndex: -1, addRowPosition: "first" }}
+        options={{ actionsColumnIndex: -1, addRowPosition: "first", exportButton: true, exportAllData: true }}
         editable={{
           onRowAdd: newData =>
             new Promise((resolve, reject) => {

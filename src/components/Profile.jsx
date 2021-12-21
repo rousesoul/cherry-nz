@@ -1,34 +1,27 @@
 import React from "react";
-import { withRouter, Redirect } from 'react-router-dom';
-import authService from "../services/auth.service";
+import { withRouter } from 'react-router-dom';
 
-function Profile() {
-  const currentUser = authService.getCurrentUser()
-
+function Profile({ currentUser }) {
   return (
-    currentUser
-      ?
-      <div className="container mt-3">
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.userName}</strong> Profile
-          </h3>
-        </header>
-        <p>
-          <strong>User Id:</strong> {currentUser.userId}
-        </p>
-        <p>
-          <strong>Type:</strong> {currentUser.type}
-        </p>
-        <p>
-          <strong>Discount Rate:</strong> {currentUser.discountRate}
-        </p>
-        <p>
-          <strong>Token:</strong> {currentUser.token}
-        </p>
-      </div>
-      :
-      <Redirect to="/home" />
+    <div className="container mt-3">
+      <header className="jumbotron">
+        <h3>
+          <strong>{currentUser.userName}</strong> Profile
+        </h3>
+      </header>
+      <p>
+        <strong>User Id:</strong> {currentUser.userId}
+      </p>
+      <p>
+        <strong>Type:</strong> {currentUser.type}
+      </p>
+      <p>
+        <strong>Discount Rate:</strong> {currentUser.discountRate}
+      </p>
+      <p>
+        <strong>Token:</strong> {currentUser.token}
+      </p>
+    </div>
   );
 }
 

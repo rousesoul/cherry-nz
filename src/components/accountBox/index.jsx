@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
-import { Marginer } from "../marginer";
 import LoginForm from "./loginForm";
 import SignupForm from "./signupForm";
+import { Marginer } from "../marginer/marginer";
 
 const BoxContainer = styled.div`
   width: 280px;
