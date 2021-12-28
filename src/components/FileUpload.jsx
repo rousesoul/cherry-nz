@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { get, post, put } from "../services/http";
+import { fetch, create, update } from "../services/http";
 import api from "../services/api";
 import { Form, Button, Container } from "react-bootstrap";
 import ProductService from "../services/product.service";
@@ -14,16 +14,19 @@ function FileUpload({ onClose, imageUpdate, rowId }) {
   }
 
   useEffect(() => {
-    get(api.apiURL + api.product)
-      .then(res => {
-        for (let prod of res.data.data) {
-          if (prod.imageUrl) {
-            prod.imageUrl = JSON.parse(prod.imageUrl).url
+    (async () => {
+      await fetch(api.apiURL + api.product)
+        .then(res => {
+          for (let prod of res.data.data) {
+            if (prod.imageUrl) {
+              prod.imageUrl = JSON.parse(prod.imageUrl).url
+            }
           }
-        }
-        setData(res.data.data)
-      })
-      .catch(err => console.log(err))
+          setData(res.data.data)
+        })
+        .catch(err => console.log(err))
+    })();
+    return null;
   }, [])
 
   const tableData = data.map(ProductService.productMap)
@@ -50,7 +53,7 @@ function FileUpload({ onClose, imageUpdate, rowId }) {
       "imageUrl": `{"url":"${imageUrl}"}`
     }
 
-    put(api.apiURL + api.productUpdate, columns)
+    update(api.apiURL + api.productUpdate, columns)
       .then(() => {
         newData.imageUrl = imageUrl
         const dataUpdate = [...tableData]
@@ -67,7 +70,7 @@ function FileUpload({ onClose, imageUpdate, rowId }) {
     const file = upload;
     let formdata = new FormData();
     formdata.append("imageFile", file)
-    post(api.apiURL + api.image, formdata)
+    create(api.apiURL + api.image, formdata)
       .then(res => {
         matchId(res.data)
       })

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { withRouter } from "react-router-dom";
 import api from "./services/api";
-import { get } from "./services/http";
+import { fetch } from "./services/http";
 
 function WeatherForecast() {
   const [columns] = useState([
@@ -16,16 +16,16 @@ function WeatherForecast() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    get(api.apiURL + api.weather)
-      .then(res => {
-        setData(res.data)
-      })
-      .catch(err => console.log(err))
+    let isMounted = true;
+    fetch(api.apiURL + api.weather)
+      .then(res => isMounted && setData(res.data))
+      .catch(err => console.log(err));
+    return () => isMounted = false;
   }, [])
 
   return (
     <div className="container mt-3">
-      < MaterialTable
+      <MaterialTable
         title="Weather Forecast"
         columns={columns}
         data={data}

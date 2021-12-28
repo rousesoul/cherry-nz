@@ -1,9 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,900");
 
 * {
   margin: 0;
   padding: 0;
   font-family: "Poppins";
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -21,6 +24,13 @@ label {
 
 nav {
   background-color: #ff4757
+}
+
+.form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 2.5px rgba(15, 15, 15, 0.19);
 }
 
 .card-container.card {
@@ -72,5 +82,93 @@ nav {
 
 .Input:focus {
   outline: none;
-  border-bottom: 2px solid rgb(241, 196, 15);
+  border-bottom: 2px solid #ff4757;
+}
+
+#forbidden {
+  position: relative;
+  height: 100vh;
+}
+
+#forbidden .forbidden {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.forbidden {
+  max-width: 410px;
+  width: 100%;
+  text-align: center;
+}
+
+.forbidden .forbidden-oops {
+  height: 280px;
+  position: relative;
+  z-index: -1;
+}
+
+.forbidden .forbidden-oops h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 230px;
+  margin: 0px;
+  font-weight: 900;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  background: url('./img/cherries.jpg') no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: cover;
+  background-position: center;
+}
+
+
+.forbidden h2 {
+  font-family: 'Montserrat', sans-serif;
+  color: #000;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 0;
+}
+
+.forbidden p {
+  font-family: 'Montserrat', sans-serif;
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+
+.forbidden a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: uppercase;
+  background: #ff4757;
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 40px;
+  color: #fff;
+  font-weight: 700;
+  -webkit-box-shadow: 0px 4px 15px -5px #ff4757;
+  box-shadow: 0px 4px 15px -5px #ff4757;
+}
+
+@media only screen and (max-width: 767px) {
+  .forbidden .forbidden-oops {
+    height: 142px;
+  }
+
+  .forbidden .forbidden-oops h1 {
+    font-size: 112px;
+  }
 }

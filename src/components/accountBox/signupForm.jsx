@@ -2,7 +2,6 @@ import React, { useState, useRef, useContext } from "react";
 import {
   BoldLink,
   BoxContainer,
-  FormContainer,
   MutedLink,
   SubmitButton,
 } from "./common";
@@ -116,7 +115,7 @@ export default function SignupForm() {
       <Form onSubmit={handleRegister} ref={form}>
         {!successful &&
           <>
-            <FormContainer>
+            <div className="form-container">
               <Input
                 type="text"
                 placeholder="Username"
@@ -141,7 +140,7 @@ export default function SignupForm() {
                 value={password}
                 onChange={onChangePassword}
                 validations={[required, vpassword]} />
-            </FormContainer><Marginer direction="vertical" margin={10} />
+            </div><Marginer direction="vertical" margin={10} />
             <SubmitButton type="submit">Signup</SubmitButton>
           </>
         }
@@ -156,7 +155,7 @@ export default function SignupForm() {
           </div>
         }
         <Marginer direction="vertical" margin="1em" />
-        <MutedLink href="#">
+        <MutedLink>
           Already have an account?
           <BoldLink href="#" onClick={switchToSignin}>
             Login

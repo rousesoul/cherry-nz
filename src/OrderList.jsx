@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { withRouter } from "react-router-dom";
 import api from "./services/api";
-import { get } from "./services/http";
+import { fetch } from "./services/http";
 import XLSX from "xlsx";
 
 const extensions = ["xlsx", "xls", "csv"];
 
-function OderList() {
-  const [columnsOriginal] = useState([
+function OrderList() {
+  const columnsOriginal = [
     { title: "User Id", field: "userId", type: "numeric" },
     { title: "Product Id", field: "productId", type: "numeric" },
     { title: "QTY Rate", field: "qty", type: "numeric" },
@@ -34,7 +34,7 @@ function OderList() {
     { title: "Customer Reference No", field: "customerReferenceNo" },
     { title: "Sender Company Name", field: "senderCompanyName" },
     { title: "Payment Method", field: "paymentMethod" },
-  ]);
+  ];
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,24 +60,22 @@ function OderList() {
   }
 
   useEffect(() => {
-    const abortCont = new AbortController();
-
-    get(api.apiURL + api.order, { signal: abortCont.signal, timeout: 60000 })
+    let isMounted = true;
+    fetch(api.apiURL + api.order)
       .then(res => {
-        setIsLoading(false);
-        setData(res.data.data);
-        setError(null);
+        isMounted && setIsLoading(false);
+        isMounted && setData(res.data.data);
+        isMounted && setError(null);
       })
       .catch(err => {
         if (err.name === "AbortError") {
           console.log("fetch aborted")
         } else {
-          setIsLoading(false);
+          isMounted && setIsLoading(false);
           console.log(err.message);
         }
-      })
-
-    return () => abortCont.abort();
+      });
+    return () => isMounted = false;
   }, [])
 
   const importExcel = e => {
@@ -109,7 +107,7 @@ function OderList() {
   return (
     <div className="mt-3">
       {error && <div>{error}</div>}
-      <input type="file" onChange={importExcel} className="ms-3 mb-3" />
+      <div className="text-nowrap ms-3 mb-3">You can import an xlsx, xls or csv file here:<input type="file" onChange={importExcel} className="ms-3" /></div>
       <MaterialTable
         title="Order List"
         isLoading={isLoading}
@@ -152,4 +150,4 @@ function OderList() {
   );
 }
 
-export default withRouter(OderList)
+export default withRouter(OrderList)

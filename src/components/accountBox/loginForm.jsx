@@ -2,7 +2,6 @@ import React, { useState, useRef, useContext } from "react";
 import {
   BoldLink,
   BoxContainer,
-  FormContainer,
   MutedLink,
   SubmitButton,
 } from "./common";
@@ -26,7 +25,7 @@ const required = (value) => {
 };
 
 export default function LoginForm() {
-  let history = useHistory();
+  const history = useHistory();
   const form = useRef();
   const checkBtn = useRef();
 
@@ -63,7 +62,6 @@ export default function LoginForm() {
         .then(
           () => {
             history.push("/product");
-            window.location.reload();
           },
           (error) => {
             const resMessage =
@@ -74,7 +72,8 @@ export default function LoginForm() {
               error.toString();
 
             setLoading(false);
-            setMessage(resMessage);
+            console.log(resMessage);
+            setMessage("Username or password is incorrect!");
           }
         );
     } else {
@@ -87,7 +86,7 @@ export default function LoginForm() {
   return (
     <BoxContainer>
       <Form onSubmit={handleLogin} ref={form}>
-        <FormContainer>
+        <div className="form-container">
           <Input
             type="text"
             placeholder="Username"
@@ -106,7 +105,7 @@ export default function LoginForm() {
             onChange={onChangePassword}
             validations={[required]}
           />
-        </FormContainer>
+        </div>
         <Marginer direction="vertical" margin={10} />
         <MutedLink href="#">Forget your password?</MutedLink>
         <label>
@@ -126,7 +125,7 @@ export default function LoginForm() {
           </div>
         )}
         <Marginer direction="vertical" margin="1em" />
-        <MutedLink href="#">
+        <MutedLink>
           Don't have an accoun?{" "}
           <BoldLink href="#" onClick={switchToSignup}>
             Signup

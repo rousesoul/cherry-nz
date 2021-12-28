@@ -1,10 +1,10 @@
 import axios from "axios";
 
-let baseUrl = "http://206.189.39.185:5031"
+let baseURL = "http://206.189.39.185:5031"
 
 const instance = axios.create({
-  timeout: 10000,
-  baseURL: baseUrl
+  timeout: 60000,
+  baseURL: baseURL,
 })
 
 instance.defaults.headers.post["Content-Type"] = "application/json"
@@ -22,7 +22,7 @@ instance.interceptors.response.use(response => {
   return response;
 })
 
-export const get = (url, data) => {
+export const fetch = (url, data) => {
   return new Promise((resolve, reject) => {
     instance({
       method: "get",
@@ -36,7 +36,7 @@ export const get = (url, data) => {
   })
 }
 
-export const post = (url, data) => {
+export const create = (url, data) => {
   return new Promise((resolve, reject) => {
     instance({
       method: "post",
@@ -50,7 +50,7 @@ export const post = (url, data) => {
   })
 }
 
-export const put = (url, data) => {
+export const update = (url, data) => {
   return new Promise((resolve, reject) => {
     instance({
       method: "put",

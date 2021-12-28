@@ -1,8 +1,8 @@
 import api from "./api";
-import { post } from "./http";
+import { create } from "./http";
 
 const register = (username, email, password) => {
-  return post(api.apiURL + api.signup, {
+  return create(api.apiURL + api.signup, {
     username,
     email,
     password,
@@ -10,7 +10,7 @@ const register = (username, email, password) => {
 }
 
 const login = (username, password, rememberMe) => {
-  return post(api.apiURL + api.login, {
+  return create(api.apiURL + api.login, {
     username,
     password,
   })

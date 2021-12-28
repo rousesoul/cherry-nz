@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { get, post } from "./services/http";
+import { fetch, create, remove, update } from "./services/http";
 import api from "./services/api";
 
-Component.prototype.get = get;
-Component.prototype.post = post;
+Component.prototype.get = fetch;
+Component.prototype.post = create;
+Component.prototype.put = update;
+Component.prototype.delete = remove;
 Component.prototype.api = api;
 
 ReactDOM.render(
