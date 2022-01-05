@@ -20,7 +20,7 @@ function OrderList() {
     { title: "Recipient", field: "recipient" },
     { title: "Recipient Country", field: "recipientCountry" },
     { title: "Recipient Provience", field: "recipientProvience" },
-    { title: "recipient City", field: "recipientCity" },
+    { title: "Recipient City", field: "recipientCity" },
     { title: "Recipient Addr", field: "recipientAddr" },
     { title: "Recipient Number", field: "recipientNumber" },
     { title: "Sender City", field: "senderCity" },
@@ -104,8 +104,37 @@ function OrderList() {
       (setData([])) && (setColumns([]));
   }
 
+  const datas = data.map(data => {
+    return {
+      "User Id": data.userId,
+      "Product Id": data.productId,
+      "QTY Rate": data.qty,
+      "Batch Id": data.batchId,
+      "Price Id": data.price,
+      "Unit Price Rate": data.unitPrice,
+      "Po Number": data.poNumber,
+      "Recipient": data.recipient,
+      "Recipient Country": data.recipientCountry,
+      "Recipient Provience": data.recipientProvience,
+      "Recipient City": data.recipientCity,
+      "Recipient Addr": data.recipientAddr,
+      "Recipient Number": data.recipientNumber,
+      "Sender City": data.senderCity,
+      "Sender Addr": data.senderAddr,
+      "Sender Country": data.senderCountry,
+      "Sender Number": data.senderNumber,
+      "Sender Name": data.senderName,
+      "Status": data.status,
+      "Track No": data.trackNo,
+      "Billing Company": data.billingCompany,
+      "Customer Reference No": data.customerReferenceNo,
+      "Sender Company Name": data.senderCompanyName,
+      "Payment Method": data.paymentMethod,
+    }
+  })
+
   const emportExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(data);
+    const workSheet = XLSX.utils.json_to_sheet(datas);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, 'orders');
     XLSX.write(workBook, { bookType: 'xlsx', type: 'binary' });
@@ -124,7 +153,7 @@ function OrderList() {
         options={{ actionsColumnIndex: -1, addRowPosition: "first" }}
         actions={[
           {
-            icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+            icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
               <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
               <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
             </svg>,

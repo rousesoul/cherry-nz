@@ -63,7 +63,7 @@ export default function LoginForm() {
           () => {
             history.push("/product");
           },
-          (error) => {
+          error => {
             const resMessage =
               (error.response &&
                 error.response.data &&
@@ -132,6 +132,7 @@ export default function LoginForm() {
           </BoldLink>
         </MutedLink>
         <CheckButton style={{ display: "none" }} ref={checkBtn} />
+        <Marginer direction="vertical" margin="1em" />
       </Form>
     </BoxContainer>
   );

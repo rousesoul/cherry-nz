@@ -36,6 +36,7 @@ const BackDrop = styled(motion.div)`
   flex-direction: column;
   border-radius: 50%;
   transform: rotate(60deg);
+  z-index: 5;
   top: -290px;
   left: -70px;
   background: #ff6b81;

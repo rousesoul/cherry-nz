@@ -93,7 +93,7 @@ export default function SignupForm() {
           setMessage("Signuped successfully! You can login now!");
           setSuccessful(true);
         },
-        (error) => {
+        error => {
           const resMessage =
             (error.response &&
               error.response.data &&
@@ -162,6 +162,7 @@ export default function SignupForm() {
           </BoldLink>
         </MutedLink>
         <CheckButton style={{ display: "none" }} ref={checkBtn} />
+        <Marginer direction="vertical" margin="1em" />
       </Form>
     </BoxContainer>
   );

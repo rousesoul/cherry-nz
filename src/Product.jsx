@@ -72,7 +72,7 @@ function Product() {
         setData([...dataUpdate]);
       })
       .catch(error => {
-        alert('Update Failed');
+        alert("Update Failed");
       })
     resolve();
   }
@@ -103,20 +103,20 @@ function Product() {
               )
             }
           },
-          { title: "品名 (Product Name)", field: "productName", initialEditValue: "Cherry" },
+          { title: "品名 (Product Name)", field: "productName", initialEditValue: "Cherry", validate: tableData => tableData.productName === "" ? { isValid: false, helperText: "Name cannot be empty" } : true },
           { title: "Desciption", field: "desciption" },
-          { title: "RRP Price (CNY)", field: "priceRrp", type: "numeric" },
-          { title: "Shopify Price (CNY)", field: "priceShopify", type: "numeric" },
-          { title: "Agent Price (CNY)", field: "priceAgent", type: "numeric" },
-          { title: "1212 Price (CNY)", field: "price1212", type: "numeric" },
-          { title: "Special Price (CNY)", field: "priceSpecial", type: "numeric" },
-          { title: "Weight (KG)", field: "weight", type: "numeric" },
-          { title: "Package Qty", field: "packageQty", type: "numeric" },
+          { title: "RRP Price (CNY)", field: "priceRrp", type: "numeric", validate: tableData => tableData.priceRrp > 10000 ? { isValid: false, helperText: "Must be less than 10000" } : true },
+          { title: "Shopify Price (CNY)", field: "priceShopify", type: "numeric", validate: tableData => tableData.priceShopify > 10000 ? { isValid: false, helperText: "Must be less than 10000" } : true },
+          { title: "Agent Price (CNY)", field: "priceAgent", type: "numeric", validate: tableData => tableData.priceAgent > 10000 ? { isValid: false, helperText: "Must be less than 10000" } : true },
+          { title: "1212 Price (CNY)", field: "price1212", type: "numeric", validate: tableData => tableData.price1212 > 10000 ? { isValid: false, helperText: "Must be less than 10000" } : true },
+          { title: "Special Price (CNY)", field: "priceSpecial", type: "numeric", validate: tableData => tableData.priceSpecial > 10000 ? { isValid: false, helperText: "Must be less than 10000" } : true },
+          { title: "Weight (KG)", field: "weight", type: "numeric", validate: tableData => tableData.weight > 10000 ? { isValid: false, helperText: "Must be less than 10000" } : true },
+          { title: "Package Qty", field: "packageQty", type: "numeric", validate: tableData => tableData.packageQty > 10000 ? { isValid: false, helperText: "Must be less than 10000" } : true },
         ]}
         data={tableData}
         options={{
           actionsColumnIndex: -1, addRowPosition: "first",
-          headerStyle: { position: 'sticky', top: 0 }, maxBodyHeight: '70vh'
+          headerStyle: { position: "sticky", top: 0 }, maxBodyHeight: "70vh"
         }}
         actions={[
           {
@@ -128,7 +128,7 @@ function Product() {
               toggleUpload()
               setRowId(rowData.productId)
             },
-            tooltip: 'Edit Product Image',
+            tooltip: "Edit Product Image",
           }
         ]}
         editable={{
