@@ -16,7 +16,7 @@ function Product() {
   const toggleClose = () => {
     setUpload(false)
   };
-  const imageUpdate = (update) => {
+  const imageUpdate = update => {
     setData([...update])
   };
 
@@ -27,8 +27,9 @@ function Product() {
     fetch(api.apiURL + api.product)
       .then(res => {
         for (let prod of res.data.data) {
+          let image = JSON.parse(prod.imageUrl)
           if (prod.imageUrl) {
-            prod.imageUrl = JSON.parse(prod.imageUrl).url
+            prod.imageUrl = image.url;
           }
         };
         isMounted && setData(res.data.data);
@@ -41,16 +42,16 @@ function Product() {
 
   const onRowAdd = (newData, resolve) => {
     create(api.apiURL + api.productCreate, ProductService.productColumns(newData))
-      .then((response) => {
+      .then(response => {
         const addData = [...tableData, newData]
         setData([...addData])
         resolve()
       })
   };
 
-  function onRowDelete(oldData, resolve) {
+  const onRowDelete = (oldData, resolve) => {
     remove(`${api.apiURL}/api/Product/${oldData.productId}`)
-      .then((response) => {
+      .then(response => {
         const index = oldData.tableData.id;
         const deleteProduct = [...tableData];
         deleteProduct.splice(index, 1);
@@ -62,9 +63,9 @@ function Product() {
       })
   }
 
-  function onRowUpdate(newData, oldData, resolve) {
+  const onRowUpdate = (newData, oldData, resolve) => {
     update(api.apiURL + api.productUpdate, ProductService.productColumns(newData))
-      .then((response) => {
+      .then(response => {
         const dataUpdate = [...tableData];
         const index = oldData.tableData.id;
         dataUpdate[index] = newData;

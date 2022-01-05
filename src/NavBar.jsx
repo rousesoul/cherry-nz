@@ -21,13 +21,13 @@ export default function NavBar({ currentUser }) {
 
                 <li className="nav-item">
                     <NavLink exact to="/oderList" className="nav-link">
-                        OderList
+                        Oder List
                     </NavLink>
                 </li>
 
                 <li className="nav-item">
                     <NavLink exact to="/userlist" className="nav-link">
-                        UserList
+                        User List
                     </NavLink>
                 </li>
 
@@ -46,7 +46,7 @@ export default function NavBar({ currentUser }) {
                 </li>
                 <li className="nav-item">
                     <a href="/home" className="nav-link me-4" onClick={logOut}>
-                        LogOut
+                        Log Out
                     </a>
                 </li>
             </div>

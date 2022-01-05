@@ -104,6 +104,14 @@ function OrderList() {
       (setData([])) && (setColumns([]));
   }
 
+  const emportExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(data);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'orders');
+    XLSX.write(workBook, { bookType: 'xlsx', type: 'binary' });
+    XLSX.writeFile(workBook, 'OrdersList.xlsx');
+  }
+
   return (
     <div className="mt-3">
       {error && <div>{error}</div>}
@@ -113,7 +121,18 @@ function OrderList() {
         isLoading={isLoading}
         columns={columns}
         data={data}
-        options={{ actionsColumnIndex: -1, addRowPosition: "first", exportButton: true, exportAllData: true }}
+        options={{ actionsColumnIndex: -1, addRowPosition: "first" }}
+        actions={[
+          {
+            icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+            </svg>,
+            onClick: () => emportExcel(),
+            tooltip: "Export to Excel",
+            isFreeAction: true
+          }
+        ]}
         editable={{
           onRowAdd: newData =>
             new Promise((resolve, reject) => {
