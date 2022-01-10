@@ -45,7 +45,7 @@ function OrderList() {
     const parts = file.name.split(".");
     const extension = parts[parts.length - 1];
     return extensions.includes(extension);
-  }
+  };
 
   const convertToJson = (headers, data) => {
     const rows = [];
@@ -57,7 +57,7 @@ function OrderList() {
       rows.push(rowData);
     });
     return rows
-  }
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -76,7 +76,7 @@ function OrderList() {
         }
       });
     return () => isMounted = false;
-  }, [])
+  }, []);
 
   const importExcel = e => {
     const file = e.target.files[0];
@@ -98,11 +98,10 @@ function OrderList() {
       fileData.splice(0, 1);
       setData(convertToJson(headers, fileData));
     }
-    file ?
-      (getExtension(file) ? reader.readAsBinaryString(file) : alert("Invalid file input, Select Excel, CSV file"))
-      :
-      (setData([])) && (setColumns([]));
-  }
+    file ? (getExtension(file)
+      ? reader.readAsBinaryString(file) : alert("Invalid file input, Select Excel, CSV file"))
+      : (setData([])) && (setColumns([]));
+  };
 
   const datas = data.map(data => {
     return {
@@ -131,7 +130,7 @@ function OrderList() {
       "Sender Company Name": data.senderCompanyName,
       "Payment Method": data.paymentMethod,
     }
-  })
+  });
 
   const emportExcel = () => {
     const workSheet = XLSX.utils.json_to_sheet(datas);
@@ -139,7 +138,7 @@ function OrderList() {
     XLSX.utils.book_append_sheet(workBook, workSheet, 'orders');
     XLSX.write(workBook, { bookType: 'xlsx', type: 'binary' });
     XLSX.writeFile(workBook, 'OrdersList.xlsx');
-  }
+  };
 
   return (
     <div className="mt-3">

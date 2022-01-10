@@ -1,83 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import { fetch, create, update } from "../services/http";
+import { create } from "../services/http";
 import api from "../services/api";
 import { Form, Button, Container } from "react-bootstrap";
-import ProductService from "../services/product.service";
 
-function FileUpload({ onClose, imageUpdate, rowId }) {
-  const [upload, setUpload] = useState()
-  const [data, setData] = useState([]);
-  const UploadImage = (e) => {
-    e.preventDefault()
-    setUpload(e.target.files[0])
-  }
+function FileUpload({ tableData }) {
+  const [upload, setUpload] = useState();
+  const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    (async () => {
-      await fetch(api.apiURL + api.product)
-        .then(res => {
-          for (let prod of res.data.data) {
-            if (prod.imageUrl) {
-              prod.imageUrl = JSON.parse(prod.imageUrl).url
-            }
-          }
-          setData(res.data.data)
-        })
-        .catch(err => console.log(err))
-    })();
-    return null;
-  }, [])
+  const selectImage = e => {
+    e.preventDefault();
+    setUpload(e.target.files[0]);
+  };
 
-  const tableData = data.map(ProductService.productMap)
+  const onUploadProgress = event => setProgress(Math.round((100 * event.loaded) / event.total));
 
-  const matchId = (imageUrl) => {
-    let newData = {}
-    for (let product of tableData) {
-      if (rowId === product.productId) {
-        newData = product
-      }
-    }
-
-    const columns = {
-      "productName": newData.productName,
-      "priceRrp": parseInt(newData.priceRrp),
-      "priceShopify": parseInt(newData.priceShopify),
-      "priceAgent": parseInt(newData.priceAgent),
-      "price1212": parseInt(newData.price1212),
-      "priceSpecial": parseInt(newData.priceSpecial),
-      "desciption": newData.desciption,
-      "weight": parseInt(newData.weight),
-      "packageQty": parseInt(newData.packageQty),
-      "productId": parseInt(newData.productId),
-      "imageUrl": `{"url":"${imageUrl}"}`
-    }
-
-    update(api.apiURL + api.productUpdate, columns)
-      .then(() => {
-        newData.imageUrl = imageUrl
-        const dataUpdate = [...tableData]
-        imageUpdate(dataUpdate)
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  }
-
-  const submitImage = (e) => {
-    e.preventDefault()
-    onClose()
+  const uploadImage = e => {
+    e.preventDefault();
     const file = upload;
+    setProgress(0);
     let formdata = new FormData();
-    formdata.append("imageFile", file)
-    create(api.apiURL + api.image, formdata)
+    formdata.append("imageFile", file);
+    create(api.apiURL + api.image, formdata, { onUploadProgress })
       .then(res => {
-        matchId(res.data)
+        tableData.onChange(res.data);
       })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+      .catch(() => setProgress(0));
+  };
 
   return (
     <>
@@ -88,7 +37,7 @@ function FileUpload({ onClose, imageUpdate, rowId }) {
           alignItems: "flex-end",
         }}>
         <Form.Group controlId="formFile" className="mb-2">
-          <Form.Control type="file" onChange={e => UploadImage(e)} />
+          <Form.Control type="file" onChange={selectImage} />
         </Form.Group>
       </Container>
       <Container
@@ -99,15 +48,24 @@ function FileUpload({ onClose, imageUpdate, rowId }) {
         }}>
         <Button
           className="btn btn-secondary"
-          style={{ height: "38px", marginLeft: "5px", marginBottom: "5px" }}
-          type="submit"
-          onClick={submitImage}
-        >Submit</Button>
-        <Button
-          className="btn btn-light"
-          style={{ height: "38px", marginLeft: "5px", marginBottom: "5px" }}
-          onClick={onClose}
-        >Cancle</Button>
+          style={{ height: "36px" }}
+          type="upload"
+          onClick={uploadImage}
+        >Upload</Button>
+        <div className="w-100 h-100 mb-2 ms-2">
+          <div className="progress">
+            <div
+              className="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style={{ width: progress + "%" }}
+            >
+              {progress}%
+            </div>
+          </div>
+        </div>
       </Container>
     </>
   );

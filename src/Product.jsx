@@ -8,18 +8,6 @@ import FileUpload from "./components/FileUpload";
 import ProductService from "./services/product.service";
 
 function Product() {
-  const [rowId, setRowId] = useState();
-  const [upload, setUpload] = useState(false);
-  const toggleUpload = () => {
-    setUpload(true)
-  };
-  const toggleClose = () => {
-    setUpload(false)
-  };
-  const imageUpdate = update => {
-    setData([...update])
-  };
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -27,9 +15,8 @@ function Product() {
     fetch(api.apiURL + api.product)
       .then(res => {
         for (let prod of res.data.data) {
-          let image = JSON.parse(prod.imageUrl)
           if (prod.imageUrl) {
-            prod.imageUrl = image.url;
+            prod.imageUrl = JSON.parse(prod.imageUrl).url
           }
         };
         isMounted && setData(res.data.data);
@@ -84,24 +71,10 @@ function Product() {
         const columns={[
           {
             title: "Product Image", field: "imageUrl",
-            render: tableData => {
-              return (
-                upload
-                  &&
-                  rowId === tableData.productId
-                  ?
-                  <FileUpload onClose={toggleClose}
-                    imageUpdate={imageUpdate}
-                    rowId={rowId}
-                  />
-                  :
-                  tableData.imageUrl
-                    ?
-                    <img src={tableData.imageUrl} alt="" width="120" height="80" />
-                    :
-                    <span>No Product Img</span>
-              )
-            }
+            editComponent: tableData =>  <FileUpload tableData={tableData} />,
+            render: tableData => tableData.imageUrl
+              ? <img src={tableData.imageUrl} alt="" width="120" height="80" />
+              : <span>No Product Img</span>
           },
           { title: "品名 (Product Name)", field: "productName", initialEditValue: "Cherry", validate: tableData => tableData.productName === "" ? { isValid: false, helperText: "Name cannot be empty" } : true },
           { title: "Desciption", field: "desciption" },
@@ -118,19 +91,6 @@ function Product() {
           actionsColumnIndex: -1, addRowPosition: "first",
           headerStyle: { position: "sticky", top: 0 }, maxBodyHeight: "70vh"
         }}
-        actions={[
-          {
-            icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-upload" viewBox="0 0 16 16">
-              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-              <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-            </svg>,
-            onClick: (event, rowData) => {
-              toggleUpload()
-              setRowId(rowData.productId)
-            },
-            tooltip: "Edit Product Image",
-          }
-        ]}
         editable={{
           onRowAdd: newData =>
             new Promise((resolve) => {
